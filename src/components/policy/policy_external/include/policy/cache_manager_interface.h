@@ -35,6 +35,7 @@
 
 #include <string>
 #include <vector>
+#include "utils/optional.h"
 
 #include "policy/policy_table/types.h"
 #include "policy/pt_representation.h"
@@ -268,6 +269,15 @@ class CacheManagerInterface {
    */
   virtual bool UnknownRPCPassthroughAllowed(
       const std::string& policy_app_id) const = 0;
+
+  /**
+   * @brief Returns state of the lock screen that could be able to be dismissed
+   * while connected to SDL, allowing users the ability to interact with the
+   * app.
+   * @return bool True if lock screen can be dismissed.
+   */
+  virtual const utils::OptionalVal<bool> LockScreenDismissalEnabledState()
+      const = 0;
 
   /**
    * @brief Allows to update 'vin' field in module_meta table.
