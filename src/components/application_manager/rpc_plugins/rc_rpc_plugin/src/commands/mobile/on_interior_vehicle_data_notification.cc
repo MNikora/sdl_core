@@ -75,6 +75,7 @@ void OnInteriorVehicleDataNotification::Run() {
   typedef std::vector<application_manager::ApplicationSharedPtr> AppPtrs;
   AppPtrs apps = RCRPCPlugin::GetRCApplications(application_manager_);
 
+  RemoveRedundantGPSDataParams((*message_)[app_mngr::strings::msg_params]);
   for (AppPtrs::iterator it = apps.begin(); it != apps.end(); ++it) {
     DCHECK(*it);
     application_manager::Application& app = **it;
@@ -102,6 +103,35 @@ std::string OnInteriorVehicleDataNotification::ModuleType() {
   const bool ok = ns_smart_device_link::ns_smart_objects::EnumConversionHelper<
       mobile_apis::ModuleType::eType>::EnumToCString(module_type, &str);
   return ok ? str : "unknown";
+}
+
+void OnInteriorVehicleDataNotification::RemoveRedundantGPSDataParams(
+    smart_objects::SmartObject& msg_params) {
+  LOG4CXX_AUTO_TRACE(logger_);
+  auto& module_data = msg_params[message_params::kModuleData];
+
+  if (module_data.keyExists(message_params::kRadioControlData)) {
+    auto& rc_data = module_data[message_params::kRadioControlData];
+    if (rc_data.keyExists(message_params::kSisData) &&
+        rc_data[message_params::kSisData].keyExists(
+            app_mngr::strings::station_location)) {
+      auto& location_data = rc_data[message_params::kSisData]
+                                   [app_mngr::strings::station_location];
+      smart_objects::SmartObject new_location_data =
+          smart_objects::SmartObject(smart_objects::SmartType_Map);
+      new_location_data[app_mngr::strings::latitude_degrees] =
+          location_data[app_mngr::strings::latitude_degrees];
+      new_location_data[app_mngr::strings::longitude_degrees] =
+          location_data[app_mngr::strings::longitude_degrees];
+      if (location_data.keyExists(app_mngr::strings::altitude)) {
+        new_location_data[app_mngr::strings::altitude] =
+            location_data[app_mngr::strings::altitude];
+      }
+
+      rc_data[message_params::kSisData][app_mngr::strings::station_location] =
+          new_location_data;
+    }
+  }
 }
 
 }  // namespace commands
