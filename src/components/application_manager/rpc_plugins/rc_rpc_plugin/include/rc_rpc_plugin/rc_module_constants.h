@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2018, Ford Motor Company
+ Copyright (c) 2019, Ford Motor Company
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -144,17 +144,6 @@ const char kTA[] = "TA";
 const char kTP[] = "TP";
 const char kREG[] = "REG";
 // RdsData struct
-
-// SisData struct
-const char kStationShortName[] = "stationShortName";
-const char kStationLocation[] = "stationLocation";
-// SisData struct
-
-// GPSData struct
-const char kLongitudeDegrees[] = "longitudeDegrees";
-const char kLatitudeDegrees[] = "latitudeDegrees";
-const char kShifted[] = "shifted";
-// GPSData struct
 
 // RadioControlData struct
 const char kFrequencyInteger[] = "frequencyInteger";
