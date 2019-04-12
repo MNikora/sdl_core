@@ -60,7 +60,6 @@ class OnInteriorVehicleDataNotification
  private:
   InteriorDataCache& interior_data_cache_;
   void AddDataToCache(const std::string& module_type);
-  void RemoveRedundantGPSDataParams(smart_objects::SmartObject& msg_params);
 };
 }  // namespace commands
 }  // namespace rc_rpc_plugin

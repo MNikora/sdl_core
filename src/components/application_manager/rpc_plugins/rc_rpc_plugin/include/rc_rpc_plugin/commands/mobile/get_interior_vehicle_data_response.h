@@ -53,9 +53,6 @@ class GetInteriorVehicleDataResponse
   void Run() OVERRIDE;
 
   ~GetInteriorVehicleDataResponse();
-
- private:
-  void RemoveRedundantGPSDataParams(smart_objects::SmartObject& msg_params);
 };
 }  // namespace commands
 }  // namespace rc_rpc_plugin
