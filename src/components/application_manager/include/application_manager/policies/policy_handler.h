@@ -809,7 +809,6 @@ class PolicyHandler : public PolicyHandlerInterface,
   std::vector<FunctionalGroupPermission> CollectAppPermissions(
       const uint32_t connection_key);
 
- private:
   static const std::string kLibrary;
 
   /**
@@ -819,7 +818,6 @@ class PolicyHandler : public PolicyHandlerInterface,
    */
   void GetRegisteredLinks(std::map<std::string, std::string>& out_links) const;
 
- private:
   mutable sync_primitives::RWLock policy_manager_lock_;
   std::shared_ptr<PolicyManager> policy_manager_;
   void* dl_handle_;
