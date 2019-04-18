@@ -663,6 +663,8 @@ class PolicyHandler : public PolicyHandlerInterface,
   void OnDeviceSwitching(const std::string& device_id_from,
                          const std::string& device_id_to) FINAL;
 
+  void OnLockScreenDismissalStateChanged() FINAL;
+
  protected:
   /**
    * Starts next retry exchange policy table

@@ -823,6 +823,17 @@ class PolicyManagerImpl : public PolicyManager {
       const std::shared_ptr<policy_table::Table> snapshot);
 
   /**
+   * @brief Compares current policies to the updated one.
+   * Trigger actions in case if certain fields after udate was changes.
+   * This function should be called after PT update.
+   * Actions require already updated policy table
+   * @param update Shared pointer to policy table udpate
+   * @param snapshot Shared pointer to old copy of policy table
+   */
+  void CheckPermissionsChangesAfterUpdate(const policy_table::Table& update,
+                                          const policy_table::Table& snapshot);
+
+  /**
    * @brief Fill structure to be sent with OnPermissionsChanged notification
    *
    * @param Policy table struct, which contains rpc functional groups data

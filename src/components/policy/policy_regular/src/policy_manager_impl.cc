@@ -356,6 +356,7 @@ bool PolicyManagerImpl::LoadPT(const std::string& file,
       ForcePTExchange();
       return false;
     }
+    CheckPermissionsChangesAfterUpdate(*pt_update, *policy_table_snapshot);
 
     listener_->OnCertificateUpdated(
         *(pt_update->policy_table.module_config.certificate));
@@ -399,6 +400,19 @@ void PolicyManagerImpl::CheckPermissionsChanges(
   std::for_each(pt_update->policy_table.app_policies_section.apps.begin(),
                 pt_update->policy_table.app_policies_section.apps.end(),
                 CheckAppPolicy(this, pt_update, snapshot));
+}
+
+void PolicyManagerImpl::CheckPermissionsChangesAfterUpdate(
+    const policy_table::Table& update, const policy_table::Table& snapshot) {
+  const auto new_lock_screen_dismissal_enabled =
+      update.policy_table.module_config.lock_screen_dismissal_enabled;
+  const auto old_lock_screen_dismissal_enabled =
+      snapshot.policy_table.module_config.lock_screen_dismissal_enabled;
+  const bool lock_screen_dismisal_updated =
+      (new_lock_screen_dismissal_enabled != old_lock_screen_dismissal_enabled);
+  if (lock_screen_dismisal_updated) {
+    listener()->OnLockScreenDismissalStateChanged();
+  }
 }
 
 void PolicyManagerImpl::PrepareNotificationData(
