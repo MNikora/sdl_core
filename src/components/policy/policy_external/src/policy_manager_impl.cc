@@ -595,9 +595,6 @@ void PolicyManagerImpl::ProcessActionsForAppPolicies(
     if (it_actions->second.is_send_permissions_to_app) {
       SendPermissionsToApp(*app_policy);
     }
-    if (it_actions->second.is_lock_screen_dismisal_updated) {
-      listener_->OnLockScreenDismissalStateChanged();
-    }
   }
 }
 
