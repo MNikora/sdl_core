@@ -3947,6 +3947,7 @@ void ApplicationManagerImpl::SendDriverDistractionState(
                          .asString() == function_id;
             }),
         messages.end());
+    application->SwapMobileMessageQueue(messages);
   };
 
   const RPCParams params;
