@@ -3916,11 +3916,12 @@ void ApplicationManagerImpl::SendDriverDistractionState(
     auto notification = std::make_shared<smart_objects::SmartObject>();
     auto& msg_params = (*notification)[strings::msg_params];
     auto& params = (*notification)[strings::params];
-    using application_manager::MessageType::kNotification;
+    using application_manager::MessageType;
     using mobile_api::FunctionID::OnDriverDistractionID;
     using hmi_apis::Common_DriverDistractionState::DD_ON;
 
-    params[strings::message_type] = static_cast<int32_t>(kNotification);
+    params[strings::message_type] =
+        static_cast<int32_t>(MessageType::kNotification);
     params[strings::function_id] = static_cast<int32_t>(OnDriverDistractionID);
     msg_params[mobile_notification::state] = driver_distraction_state();
     const auto lock_screen_dismissal =
