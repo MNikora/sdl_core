@@ -3908,9 +3908,6 @@ void ApplicationManagerImpl::SendDriverDistractionState(
     return;
   }
 
-  const std::string function_id = MessageHelper::StringifiedFunctionID(
-      mobile_api::FunctionID::OnDriverDistractionID);
-
   auto create_notification = [application, this]() {
 
     auto notification = std::make_shared<smart_objects::SmartObject>();
@@ -3936,22 +3933,25 @@ void ApplicationManagerImpl::SendDriverDistractionState(
     return notification;
   };
 
-  auto remove_posponed_dd = [application, &function_id]() {
+  auto remove_posponed_dd = [application]() {
     MobileMessageQueue messages;
     application->SwapMobileMessageQueue(messages);
     messages.erase(
         std::remove_if(
             messages.begin(),
             messages.end(),
-            [&function_id](smart_objects::SmartObjectSPtr message) {
+            [](smart_objects::SmartObjectSPtr message) {
               return (*message)[strings::params][strings::function_id]
-                         .asString() == function_id;
+                         .asUInt() ==
+                     mobile_apis::FunctionID::OnDriverDistractionID;
             }),
         messages.end());
     application->SwapMobileMessageQueue(messages);
   };
 
   const RPCParams params;
+  const std::string function_id = MessageHelper::StringifiedFunctionID(
+      mobile_api::FunctionID::OnDriverDistractionID);
   const mobile_apis::Result::eType check_result =
       CheckPolicyPermissions(application, function_id, params);
   if (mobile_api::Result::SUCCESS == check_result) {
