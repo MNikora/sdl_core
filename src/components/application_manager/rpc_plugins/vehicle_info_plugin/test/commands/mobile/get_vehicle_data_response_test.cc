@@ -32,9 +32,9 @@
 
 #include "gtest/gtest.h"
 
-#include "smart_objects/smart_object.h"
 #include "application_manager/commands/commands_test.h"
 #include "mobile/get_vehicle_data_response.h"
+#include "smart_objects/smart_object.h"
 
 namespace test {
 namespace components {

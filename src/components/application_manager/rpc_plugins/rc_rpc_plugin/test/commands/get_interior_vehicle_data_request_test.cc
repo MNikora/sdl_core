@@ -257,9 +257,9 @@ TEST_F(
   radio_data[message_params::kBand] = enums_value::kAM;
   radio_data[message_params::kSisData] = sis_data;
 
-  std::shared_ptr<
-      rc_rpc_plugin::commands::GetInteriorVehicleDataRequest> command =
-      CreateRCCommand<rc_rpc_plugin::commands::GetInteriorVehicleDataRequest>(
+  std::shared_ptr<rc_rpc_plugin::commands::GetInteriorVehicleDataRequest>
+      command = CreateRCCommand<
+          rc_rpc_plugin::commands::GetInteriorVehicleDataRequest>(
           mobile_message);
 
   // Expectations

@@ -31,8 +31,8 @@
  */
 
 #include "rc_rpc_plugin/commands/mobile/get_interior_vehicle_data_response.h"
-#include "rc_rpc_plugin/rc_module_constants.h"
 #include "rc_rpc_plugin/rc_helpers.h"
+#include "rc_rpc_plugin/rc_module_constants.h"
 #include "utils/macro.h"
 
 namespace rc_rpc_plugin {

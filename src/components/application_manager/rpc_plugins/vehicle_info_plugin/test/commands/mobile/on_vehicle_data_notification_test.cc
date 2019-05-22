@@ -42,9 +42,9 @@
 #include "application_manager/smart_object_keys.h"
 #include "smart_objects/smart_object.h"
 #include "utils/custom_string.h"
-#include "vehicle_info_plugin/vehicle_info_plugin.h"
-#include "vehicle_info_plugin/vehicle_info_app_extension.h"
 #include "utils/helpers.h"
+#include "vehicle_info_plugin/vehicle_info_app_extension.h"
+#include "vehicle_info_plugin/vehicle_info_plugin.h"
 
 namespace test {
 namespace components {
