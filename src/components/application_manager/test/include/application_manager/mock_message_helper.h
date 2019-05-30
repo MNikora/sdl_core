@@ -331,7 +331,7 @@ class MockMessageHelper {
                    const uint32_t app_id,
                    const hmi_apis::Common_ServiceType::eType service_type,
                    const hmi_apis::Common_ServiceEvent::eType service_event,
-                   const hmi_apis::Common_ServiceUpdateReason::eType
+                   const hmi_apis::Common_ServiceStatusUpdateReason::eType
                        service_update_reason));
 
   class MockServiceStatusUpdateNotificationBuilder
@@ -351,7 +351,7 @@ class MockMessageHelper {
 
     MOCK_METHOD1(AddServiceUpdateReason,
                  MessageHelper::ServiceStatusUpdateNotificationBuilder&(
-                     const hmi_apis::Common_ServiceUpdateReason::eType));
+                     const hmi_apis::Common_ServiceStatusUpdateReason::eType));
 
     MOCK_CONST_METHOD0(notification, smart_objects::SmartObjectSPtr());
   };
