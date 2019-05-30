@@ -1429,6 +1429,11 @@ void PolicyHandler::OnPermissionsUpdated(const std::string& policy_app_id,
                     << policy_app_id << " and connection_key "
                     << app->app_id());
 }
+#ifndef EXTERNAL_PROPRIETARY_MODE
+void PolicyHandler::OnPTUTimeOut() {
+  application_manager_.protocol_handler().ProcessFailedPTU();
+}
+#endif
 
 bool PolicyHandler::SaveSnapshot(const BinaryMessage& pt_string,
                                  std::string& snap_path) {
@@ -1601,6 +1606,11 @@ uint32_t PolicyHandler::TimeoutExchangeMSec() const {
 
 void PolicyHandler::OnExceededTimeout() {
   POLICY_LIB_CHECK_VOID();
+
+  std::for_each(listeners_.begin(),
+                listeners_.end(),
+                std::mem_fn(&PolicyHandlerObserver::OnPTUTimeoutExceeded));
+
   policy_manager_->OnExceededTimeout();
 }
 
@@ -1745,6 +1755,7 @@ void PolicyHandler::OnCertificateDecrypted(bool is_succeeded) {
 
   if (!is_succeeded) {
     LOG4CXX_ERROR(logger_, "Couldn't delete file " << file_name);
+    ProcessCertDecryptFailed();
     return;
   }
 
@@ -1766,6 +1777,17 @@ void PolicyHandler::OnCertificateDecrypted(bool is_succeeded) {
       listeners_.end(),
       std::bind2nd(std::mem_fun(&PolicyHandlerObserver::OnCertificateUpdated),
                    certificate_data));
+}
+
+void PolicyHandler::ProcessCertDecryptFailed() {
+  LOG4CXX_AUTO_TRACE(logger_);
+  sync_primitives::AutoLock lock(listeners_lock_);
+
+  std::for_each(
+      listeners_.begin(),
+      listeners_.end(),
+      std::bind2nd(std::mem_fn(&PolicyHandlerObserver::OnCertDecryptFinished),
+                   false));
 }
 #else   // EXTERNAL_PROPRIETARY_MODE
 void PolicyHandler::OnCertificateUpdated(const std::string& certificate_data) {
