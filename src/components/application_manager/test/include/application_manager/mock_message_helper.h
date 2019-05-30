@@ -316,6 +316,18 @@ class MockMessageHelper {
   MOCK_METHOD2(BroadcastCapabilityUpdate,
                void(smart_objects::SmartObject& msg_params,
                     ApplicationManager& app_mngr));
+  MOCK_METHOD3(CreateOnServiceStatusUpdateNotification,
+               smart_objects::SmartObject(
+                   const uint32_t app_id,
+                   const hmi_apis::Common_ServiceType::eType service_type,
+                   const hmi_apis::Common_ServiceEvent::eType service_event));
+  MOCK_METHOD4(CreateOnServiceStatusUpdateNotification,
+               smart_objects::SmartObject(
+                   const uint32_t app_id,
+                   const hmi_apis::Common_ServiceType::eType service_type,
+                   const hmi_apis::Common_ServiceEvent::eType service_event,
+                   const hmi_apis::Common_ServiceUpdateReason::eType
+                       service_update_reason));
 
   static MockMessageHelper* message_helper_mock();
 };
