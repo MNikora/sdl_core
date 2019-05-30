@@ -58,6 +58,9 @@
 
 #include "policy/policy_manager.h"
 #include "utils/helpers.h"
+#ifdef EXTERNAL_PROPRIETARY_MODE
+#include "policy/ptu_retry_handler.h"
+#endif  // EXTERNAL_PROPRIETARY_MODE
 
 namespace policy {
 
@@ -456,6 +459,11 @@ uint32_t PolicyHandler::GetAppIdForSending() const {
 }
 
 #ifdef EXTERNAL_PROPRIETARY_MODE
+PTURetryHandler& PolicyHandler::ptu_retry_handler() const {
+  LOG4CXX_AUTO_TRACE(logger_);
+  return *policy_manager_;
+}
+
 void PolicyHandler::OnAppPermissionConsent(
     const uint32_t connection_key,
     const PermissionConsent& permissions,
@@ -1470,7 +1478,8 @@ void PolicyHandler::OnSnapshotCreated(
   }
 }
 #else  // EXTERNAL_PROPRIETARY_MODE
-void PolicyHandler::OnSnapshotCreated(const BinaryMessage& pt_string) {
+void PolicyHandler::OnSnapshotCreated(const BinaryMessage& pt_string,
+                                      const PTUIterationType iteration_type) {
   LOG4CXX_AUTO_TRACE(logger_);
   POLICY_LIB_CHECK_VOID();
 #ifdef PROPRIETARY_MODE
@@ -1479,10 +1488,20 @@ void PolicyHandler::OnSnapshotCreated(const BinaryMessage& pt_string) {
     LOG4CXX_ERROR(logger_, "Snapshot processing skipped.");
     return;
   }
-  MessageHelper::SendPolicyUpdate(policy_snapshot_full_path,
-                                  TimeoutExchangeSec(),
-                                  policy_manager_->RetrySequenceDelaysSeconds(),
-                                  application_manager_);
+
+  if (PTUIterationType::RetryIteration == iteration_type) {
+    auto on_system_request_notification =
+        MessageHelper::CreateOnSystemRequestNotificationToMobile(
+            pt_string, GetAppIdForSending());
+    application_manager_.GetRPCService().ManageMobileCommand(
+        on_system_request_notification, commands::Command::SOURCE_SDL);
+  } else {
+    MessageHelper::SendPolicyUpdate(
+        policy_snapshot_full_path,
+        TimeoutExchangeSec(),
+        policy_manager_->RetrySequenceDelaysSeconds(),
+        application_manager_);
+  }
 #else   // PROPRIETARY_MODE
   LOG4CXX_ERROR(logger_, "HTTP policy");
   EndpointUrls urls;
@@ -1605,6 +1624,7 @@ uint32_t PolicyHandler::TimeoutExchangeMSec() const {
 }
 
 void PolicyHandler::OnExceededTimeout() {
+  LOG4CXX_AUTO_TRACE(logger_);
   POLICY_LIB_CHECK_VOID();
 
   std::for_each(listeners_.begin(),
@@ -1789,6 +1809,7 @@ void PolicyHandler::ProcessCertDecryptFailed() {
       std::bind2nd(std::mem_fn(&PolicyHandlerObserver::OnCertDecryptFinished),
                    false));
 }
+
 #else   // EXTERNAL_PROPRIETARY_MODE
 void PolicyHandler::OnCertificateUpdated(const std::string& certificate_data) {
   LOG4CXX_AUTO_TRACE(logger_);

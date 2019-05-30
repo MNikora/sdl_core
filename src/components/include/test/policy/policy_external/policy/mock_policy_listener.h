@@ -104,6 +104,8 @@ class MockPolicyListener : public ::policy::PolicyListener {
                     const std::string& policy_app_id,
                     const std::string& hmi_level));
   MOCK_METHOD1(OnCertDecryptFinished, void(bool));
+  MOCK_METHOD0(IncrementRetryIndex, void());
+  MOCK_CONST_METHOD0(IsAllowedPTURetriesExceeded, bool());
 };
 
 }  // namespace policy_test

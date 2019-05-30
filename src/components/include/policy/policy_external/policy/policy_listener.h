@@ -42,6 +42,8 @@ namespace policy {
 
 namespace custom_str = utils::custom_string;
 
+class PTURetryHandler;
+
 class PolicyListener {
  public:
   virtual ~PolicyListener() {}
@@ -175,6 +177,8 @@ class PolicyListener {
   virtual void OnUpdateHMIStatus(const std::string& device_id,
                                  const std::string& policy_app_id,
                                  const std::string& hmi_level) = 0;
+
+  virtual PTURetryHandler& ptu_retry_handler() const = 0;
 };
 }  // namespace policy
 #endif  // SRC_COMPONENTS_INCLUDE_POLICY_POLICY_EXTERNAL_POLICY_POLICY_LISTENER_H_

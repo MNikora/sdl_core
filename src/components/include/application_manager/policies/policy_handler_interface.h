@@ -54,6 +54,8 @@ using namespace ::rpc::policy_table_interface_base;
 namespace policy {
 typedef std::shared_ptr<utils::Callable> StatusNotifier;
 
+class PTURetryHandler;
+
 class PolicyHandlerInterface {
  public:
   virtual ~PolicyHandlerInterface() {}
@@ -79,8 +81,11 @@ class PolicyHandlerInterface {
   virtual void OnSnapshotCreated(const BinaryMessage& pt_string,
                                  const std::vector<int>& retry_delay_seconds,
                                  uint32_t timeout_exchange) = 0;
+
+  virtual PTURetryHandler& ptu_retry_handler() const = 0;
 #else   // EXTERNAL_PROPRIETARY_MODE
-  virtual void OnSnapshotCreated(const BinaryMessage& pt_string) = 0;
+  virtual void OnSnapshotCreated(const BinaryMessage& pt_string,
+                                 const PTUIterationType iteration_type) = 0;
 #endif  // EXTERNAL_PROPRIETARY_MODE
 
   virtual bool GetPriority(const std::string& policy_app_id,

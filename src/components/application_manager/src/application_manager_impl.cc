@@ -2144,6 +2144,11 @@ bool ApplicationManagerImpl::OnHandshakeDone(
   return false;
 }
 
+bool ApplicationManagerImpl::OnPTUFailed() {
+  LOG4CXX_AUTO_TRACE(logger_);
+  return false;
+}
+
 bool ApplicationManagerImpl::OnGetSystemTimeFailed() {
   LOG4CXX_AUTO_TRACE(logger_);
   return false;

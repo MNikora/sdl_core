@@ -77,6 +77,10 @@ enum PolicyTableStatus {
   StatusUnknown
 };
 
+enum class PTUIterationType { DefaultIteration = 0, RetryIteration };
+
+enum class ResetRetryCountType { kResetWithStatusUpdate = 0, kResetInternally };
+
 // Code generator uses String class name, so this typedef was renamed to PTSring
 typedef std::string PTString;
 typedef std::vector<uint8_t> BinaryMessage;
