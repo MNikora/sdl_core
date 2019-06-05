@@ -1415,11 +1415,9 @@ bool SQLPTRepresentation::SaveModuleConfig(
   config.certificate.is_initialized() ? query.Bind(9, *(config.certificate))
                                       : query.Bind(9);
 
-  if (config.lock_screen_dismissal_enabled.is_initialized()) {
-    query.Bind(10, *(config.lock_screen_dismissal_enabled));
-  } else {
-    query.Bind(10);
-  }
+  config.lock_screen_dismissal_enabled.is_initialized()
+      ? query.Bind(10, *(config.lock_screen_dismissal_enabled))
+      : query.Bind(10);
 
   if (!query.Exec()) {
     LOG4CXX_WARN(logger_, "Incorrect update module config");

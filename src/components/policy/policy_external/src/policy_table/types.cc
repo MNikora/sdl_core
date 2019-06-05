@@ -836,6 +836,9 @@ Json::Value ModuleConfig::ToJsonValue() const {
   impl::WriteJsonField("vehicle_year", vehicle_year, &result__);
   impl::WriteJsonField("certificate", certificate, &result__);
   impl::WriteJsonField("preloaded_date", preloaded_date, &result__);
+  impl::WriteJsonField("lock_screen_dismissal_enabled",
+                       lock_screen_dismissal_enabled,
+                       &result__);
   return result__;
 }
 
@@ -930,6 +933,9 @@ bool ModuleConfig::struct_empty() const {
   if (notifications_per_minute_by_priority.is_initialized()) {
     return false;
   }
+  if (lock_screen_dismissal_enabled.is_initialized()) {
+    return false;
+  }
   if (vehicle_make.is_initialized()) {
     return false;
   }
@@ -983,6 +989,10 @@ void ModuleConfig::ReportErrors(rpc::ValidationReport* report__) const {
   if (!notifications_per_minute_by_priority.is_valid()) {
     notifications_per_minute_by_priority.ReportErrors(
         &report__->ReportSubobject("notifications_per_minute_by_priority"));
+  }
+  if (!lock_screen_dismissal_enabled.is_valid()) {
+    lock_screen_dismissal_enabled.ReportErrors(
+        &report__->ReportSubobject("lock_screen_dismissal_enabled"));
   }
   if (!vehicle_make.is_valid()) {
     vehicle_make.ReportErrors(&report__->ReportSubobject("vehicle_make"));
