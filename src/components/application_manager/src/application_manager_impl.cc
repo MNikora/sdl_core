@@ -2576,6 +2576,22 @@ void ApplicationManagerImpl::CreateApplications(SmartArray& obj_array,
   }
 }
 
+void ApplicationManagerImpl::RemovePostponedDDState(
+    ApplicationSharedPtr application) {
+  MobileMessageQueue messages;
+  application->SwapMobileMessageQueue(messages);
+  messages.erase(
+      std::remove_if(
+          messages.begin(),
+          messages.end(),
+          [](smart_objects::SmartObjectSPtr message) {
+            return (*message)[strings::params][strings::function_id].asUInt() ==
+                   mobile_apis::FunctionID::OnDriverDistractionID;
+          }),
+      messages.end());
+  application->SwapMobileMessageQueue(messages);
+}
+
 void ApplicationManagerImpl::ProcessQueryApp(
     const smart_objects::SmartObject& sm_object,
     const uint32_t connection_key) {
@@ -3909,13 +3925,11 @@ void ApplicationManagerImpl::SendDriverDistractionState(
   }
 
   auto create_notification = [application, this]() {
-
     auto notification = std::make_shared<smart_objects::SmartObject>();
     auto& msg_params = (*notification)[strings::msg_params];
     auto& params = (*notification)[strings::params];
     using application_manager::MessageType;
     using mobile_api::FunctionID::OnDriverDistractionID;
-    using hmi_apis::Common_DriverDistractionState::DD_ON;
 
     params[strings::message_type] =
         static_cast<int32_t>(MessageType::kNotification);
@@ -3924,29 +3938,15 @@ void ApplicationManagerImpl::SendDriverDistractionState(
     const auto lock_screen_dismissal =
         policy_handler_->LockScreenDismissalEnabledState();
 
-    if (lock_screen_dismissal && DD_ON == driver_distraction_state()) {
+    if (lock_screen_dismissal &&
+        hmi_apis::Common_DriverDistractionState::DD_ON ==
+            driver_distraction_state()) {
       msg_params[mobile_notification::lock_screen_dismissal_enabled] =
           *lock_screen_dismissal;
     }
 
     params[strings::connection_key] = application->app_id();
     return notification;
-  };
-
-  auto remove_posponed_dd = [application]() {
-    MobileMessageQueue messages;
-    application->SwapMobileMessageQueue(messages);
-    messages.erase(
-        std::remove_if(
-            messages.begin(),
-            messages.end(),
-            [](smart_objects::SmartObjectSPtr message) {
-              return (*message)[strings::params][strings::function_id]
-                         .asUInt() ==
-                     mobile_apis::FunctionID::OnDriverDistractionID;
-            }),
-        messages.end());
-    application->SwapMobileMessageQueue(messages);
   };
 
   const RPCParams params;
@@ -3958,7 +3958,7 @@ void ApplicationManagerImpl::SendDriverDistractionState(
     rpc_service_->ManageMobileCommand(create_notification(),
                                       commands::Command::SOURCE_SDL);
   } else {
-    remove_posponed_dd();
+    RemovePostponedDDState(application);
     application->PushMobileMessage(create_notification());
   }
 }
