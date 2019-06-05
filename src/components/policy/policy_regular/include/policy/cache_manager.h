@@ -146,8 +146,7 @@ class CacheManager : public CacheManagerInterface {
    */
   virtual const VehicleInfo GetVehicleInfo() const;
 
-  const utils::OptionalVal<bool> LockScreenDismissalEnabledState()
-      const OVERRIDE;
+  const boost::optional<bool> LockScreenDismissalEnabledState() const OVERRIDE;
 
   /**
    * @brief Get a list of enabled cloud applications

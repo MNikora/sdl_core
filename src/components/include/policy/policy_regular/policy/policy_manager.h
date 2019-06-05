@@ -35,6 +35,7 @@
 
 #include <cstdint>
 #include <vector>
+#include "boost/optional.hpp"
 
 #include "policy/access_remote.h"
 #include "policy/cache_manager_interface.h"
@@ -171,7 +172,7 @@ class PolicyManager : public usage_statistics::StatisticsManager {
    * app.
    * @return bool True if lock screen can be dismissed.
    */
-  virtual const utils::OptionalVal<bool> LockScreenDismissalEnabledState()
+  virtual const boost::optional<bool> LockScreenDismissalEnabledState()
       const = 0;
 
   /**

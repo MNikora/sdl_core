@@ -34,6 +34,7 @@
 #define SRC_COMPONENTS_POLICY_POLICY_EXTERNAL_INCLUDE_POLICY_CACHE_MANAGER_H_
 
 #include <map>
+#include "boost/optional.hpp"
 
 #include "policy/cache_manager_interface.h"
 #include "policy/pt_ext_representation.h"
@@ -158,8 +159,7 @@ class CacheManager : public CacheManagerInterface {
    */
   virtual const VehicleInfo GetVehicleInfo() const;
 
-  const utils::OptionalVal<bool> LockScreenDismissalEnabledState()
-      const OVERRIDE;
+  const boost::optional<bool> LockScreenDismissalEnabledState() const OVERRIDE;
 
   /**
    * @brief Get a list of enabled cloud applications

@@ -35,7 +35,7 @@
 
 #include <string>
 #include <vector>
-#include "utils/optional.h"
+#include "boost/optional.hpp"
 
 #include "policy/policy_table/types.h"
 #include "policy/pt_representation.h"
@@ -276,7 +276,7 @@ class CacheManagerInterface {
    * app.
    * @return bool True if lock screen can be dismissed.
    */
-  virtual const utils::OptionalVal<bool> LockScreenDismissalEnabledState()
+  virtual const boost::optional<bool> LockScreenDismissalEnabledState()
       const = 0;
 
   /**

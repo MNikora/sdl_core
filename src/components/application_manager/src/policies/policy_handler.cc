@@ -1618,9 +1618,9 @@ void PolicyHandler::OnSystemReady() {
   policy_manager_->OnSystemReady();
 }
 
-const utils::OptionalVal<bool> PolicyHandler::LockScreenDismissalEnabledState()
+const boost::optional<bool> PolicyHandler::LockScreenDismissalEnabledState()
     const {
-  POLICY_LIB_CHECK(utils::OptionalVal<bool>(utils::OptionalVal<bool>::EMPTY));
+  POLICY_LIB_CHECK(boost::optional<bool>());
   return policy_manager_->LockScreenDismissalEnabledState();
 }
 

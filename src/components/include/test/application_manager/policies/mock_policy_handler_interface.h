@@ -110,7 +110,7 @@ class MockPolicyHandlerInterface : public policy::PolicyHandlerInterface {
   MOCK_METHOD0(OnExceededTimeout, void());
   MOCK_METHOD0(OnSystemReady, void());
   MOCK_CONST_METHOD0(LockScreenDismissalEnabledState,
-                     const utils::OptionalVal<bool>());
+                     const boost::optional<bool>());
   MOCK_METHOD2(PTUpdatedAt, void(policy::Counters counter, int value));
   MOCK_METHOD1(add_listener, void(policy::PolicyHandlerObserver* listener));
   MOCK_METHOD1(remove_listener, void(policy::PolicyHandlerObserver* listener));

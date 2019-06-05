@@ -38,6 +38,8 @@
 #include <set>
 #include <string>
 #include <vector>
+#include "boost/optional.hpp"
+
 #include "application_manager/application.h"
 #include "application_manager/policies/policy_handler_observer.h"
 #include "interfaces/MOBILE_API.h"
@@ -122,7 +124,7 @@ class PolicyHandlerInterface {
   virtual uint32_t TimeoutExchangeMSec() const = 0;
   virtual void OnExceededTimeout() = 0;
   virtual void OnSystemReady() = 0;
-  virtual const utils::OptionalVal<bool> LockScreenDismissalEnabledState()
+  virtual const boost::optional<bool> LockScreenDismissalEnabledState()
       const = 0;
   virtual void PTUpdatedAt(Counters counter, int value) = 0;
   virtual void add_listener(PolicyHandlerObserver* listener) = 0;

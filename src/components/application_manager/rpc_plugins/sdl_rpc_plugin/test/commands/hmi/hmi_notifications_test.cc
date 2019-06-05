@@ -1799,7 +1799,7 @@ TEST_F(HMICommandsNotificationsTest, OnDriverDistractionNotificationEmptyData) {
   EXPECT_CALL(app_mngr_, set_driver_distraction_state(state));
   ON_CALL(app_mngr_, GetPolicyHandler())
       .WillByDefault(ReturnRef(mock_policy_handler_));
-  typedef utils::OptionalVal<bool> OptionalBool;
+  typedef boost::optional<bool> OptionalBool;
   ON_CALL(mock_policy_handler_, LockScreenDismissalEnabledState())
       .WillByDefault(Return(OptionalBool(true)));
   ON_CALL(app_mngr_, applications()).WillByDefault(Return(applications_));
@@ -1822,7 +1822,7 @@ TEST_F(HMICommandsNotificationsTest,
 
   ON_CALL(app_mngr_, GetPolicyHandler())
       .WillByDefault(ReturnRef(mock_policy_handler_));
-  typedef utils::OptionalVal<bool> OptionalBool;
+  typedef boost::optional<bool> OptionalBool;
   ON_CALL(mock_policy_handler_, LockScreenDismissalEnabledState())
       .WillByDefault(Return(OptionalBool(true)));
   ON_CALL(app_mngr_, applications()).WillByDefault(Return(applications_));
@@ -1844,7 +1844,7 @@ TEST_F(HMICommandsNotificationsTest, OnDriverDistractionNotificationValidApp) {
 
   ON_CALL(app_mngr_, GetPolicyHandler())
       .WillByDefault(ReturnRef(mock_policy_handler_));
-  typedef utils::OptionalVal<bool> OptionalBool;
+  typedef boost::optional<bool> OptionalBool;
   ON_CALL(mock_policy_handler_, LockScreenDismissalEnabledState())
       .WillByDefault(Return(OptionalBool(true)));
   ON_CALL(app_mngr_, applications()).WillByDefault(Return(applications_));

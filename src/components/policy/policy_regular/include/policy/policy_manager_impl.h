@@ -162,8 +162,7 @@ class PolicyManagerImpl : public PolicyManager {
    */
   void KmsChanged(int kilometers) OVERRIDE;
 
-  const utils::OptionalVal<bool> LockScreenDismissalEnabledState()
-      const OVERRIDE;
+  const boost::optional<bool> LockScreenDismissalEnabledState() const OVERRIDE;
 
   /**
    * @brief Increments counter of ignition cycles
@@ -824,10 +823,10 @@ class PolicyManagerImpl : public PolicyManager {
 
   /**
    * @brief Compares current policies to the updated one.
-   * Trigger actions in case if certain fields after udate was changes.
+   * Trigger actions in case if certain fields after update were changes.
    * This function should be called after PT update.
    * Actions require already updated policy table
-   * @param update Shared pointer to policy table udpate
+   * @param update Shared pointer to policy table update
    * @param snapshot Shared pointer to old copy of policy table
    */
   void CheckPermissionsChangesAfterUpdate(const policy_table::Table& update,

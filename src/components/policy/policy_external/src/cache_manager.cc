@@ -1561,15 +1561,14 @@ bool CacheManager::UnknownRPCPassthroughAllowed(
   return false;
 }
 
-const utils::OptionalVal<bool> CacheManager::LockScreenDismissalEnabledState()
+const boost::optional<bool> CacheManager::LockScreenDismissalEnabledState()
     const {
-  utils::OptionalVal<bool> empty(utils::OptionalVal<bool>::EMPTY);
+  boost::optional<bool> empty;
   CACHE_MANAGER_CHECK(empty);
   sync_primitives::AutoLock auto_lock(cache_lock_);
   policy_table::ModuleConfig& module_config = pt_->policy_table.module_config;
   if (module_config.lock_screen_dismissal_enabled.is_initialized()) {
-    return utils::OptionalVal<bool>(
-        *module_config.lock_screen_dismissal_enabled);
+    return boost::optional<bool>(*module_config.lock_screen_dismissal_enabled);
   }
   return empty;
 }

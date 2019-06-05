@@ -75,7 +75,7 @@ class HMIOnDriverDistractionNotificationTest
   }
 
   typedef std::shared_ptr<OnDriverDistractionNotification> NotificationPtr;
-  typedef utils::OptionalVal<bool> OptionalBool;
+  typedef boost::optional<bool> OptionalBool;
 
   MockAppPtr mock_app_;
   std::shared_ptr<sync_primitives::Lock> app_set_lock_;
@@ -168,7 +168,7 @@ TEST_F(HMIOnDriverDistractionNotificationTest,
       CreateCommand<OnDriverDistractionNotification>(commands_msg));
 
   ON_CALL(mock_policy_handler_interface_, LockScreenDismissalEnabledState())
-      .WillByDefault(Return(OptionalBool(OptionalBool::EMPTY)));
+      .WillByDefault(Return(boost::optional<bool>()));
 
   policy::CheckPermissionResult result;
   result.hmi_level_permitted = policy::kRpcAllowed;
