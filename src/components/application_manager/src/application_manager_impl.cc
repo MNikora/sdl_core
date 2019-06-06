@@ -2576,22 +2576,6 @@ void ApplicationManagerImpl::CreateApplications(SmartArray& obj_array,
   }
 }
 
-void ApplicationManagerImpl::RemovePostponedDDState(
-    ApplicationSharedPtr application) {
-  MobileMessageQueue messages;
-  application->SwapMobileMessageQueue(messages);
-  messages.erase(
-      std::remove_if(
-          messages.begin(),
-          messages.end(),
-          [](smart_objects::SmartObjectSPtr message) {
-            return (*message)[strings::params][strings::function_id].asUInt() ==
-                   mobile_apis::FunctionID::OnDriverDistractionID;
-          }),
-      messages.end());
-  application->SwapMobileMessageQueue(messages);
-}
-
 void ApplicationManagerImpl::ProcessQueryApp(
     const smart_objects::SmartObject& sm_object,
     const uint32_t connection_key) {
@@ -3928,8 +3912,6 @@ void ApplicationManagerImpl::SendDriverDistractionState(
     auto notification = std::make_shared<smart_objects::SmartObject>();
     auto& msg_params = (*notification)[strings::msg_params];
     auto& params = (*notification)[strings::params];
-    using application_manager::MessageType;
-    using mobile_api::FunctionID::OnDriverDistractionID;
 
     params[strings::message_type] =
         static_cast<int32_t>(MessageType::kNotification);
@@ -3958,7 +3940,19 @@ void ApplicationManagerImpl::SendDriverDistractionState(
     rpc_service_->ManageMobileCommand(create_notification(),
                                       commands::Command::SOURCE_SDL);
   } else {
-    RemovePostponedDDState(application);
+    MobileMessageQueue messages;
+    application->SwapMobileMessageQueue(messages);
+    messages.erase(
+        std::remove_if(
+            messages.begin(),
+            messages.end(),
+            [](smart_objects::SmartObjectSPtr message) {
+              return (*message)[strings::params][strings::function_id]
+                         .asUInt() ==
+                     mobile_apis::FunctionID::OnDriverDistractionID;
+            }),
+        messages.end());
+    application->SwapMobileMessageQueue(messages);
     application->PushMobileMessage(create_notification());
   }
 }

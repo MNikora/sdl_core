@@ -1200,13 +1200,6 @@ class ApplicationManagerImpl
   void CreateApplications(smart_objects::SmartArray& obj_array,
                           const uint32_t connection_key);
 
-  /**
-   * @brief Removes postponed DriverDistraction state
-   * @param application Application for which should be removed
-   * DriverDistraction state
-   */
-  void RemovePostponedDDState(ApplicationSharedPtr application);
-
   /*
    * @brief Function is called on IGN_OFF, Master_reset or Factory_defaults
    * to notify HMI that SDL is shutting down.
