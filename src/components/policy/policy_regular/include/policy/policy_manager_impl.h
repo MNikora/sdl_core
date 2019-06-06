@@ -823,7 +823,7 @@ class PolicyManagerImpl : public PolicyManager {
 
   /**
    * @brief Compares current policies to the updated one.
-   * Trigger actions in case if certain fields after update were changes.
+   * Trigger actions in case if certain fields after update were changed.
    * This function should be called after PT update.
    * Actions require already updated policy table
    * @param update Shared pointer to policy table update
