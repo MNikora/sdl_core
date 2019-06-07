@@ -1052,6 +1052,7 @@ void ModuleConfig::SetPolicyTableType(PolicyTableType pt_type) {
   seconds_between_retries.SetPolicyTableType(pt_type);
   endpoints.SetPolicyTableType(pt_type);
   notifications_per_minute_by_priority.SetPolicyTableType(pt_type);
+  lock_screen_dismissal_enabled.SetPolicyTableType(pt_type);
   vehicle_make.SetPolicyTableType(pt_type);
   vehicle_model.SetPolicyTableType(pt_type);
   vehicle_year.SetPolicyTableType(pt_type);
