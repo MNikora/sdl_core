@@ -3915,7 +3915,8 @@ void ApplicationManagerImpl::SendDriverDistractionState(
 
     params[strings::message_type] =
         static_cast<int32_t>(MessageType::kNotification);
-    params[strings::function_id] = static_cast<int32_t>(OnDriverDistractionID);
+    params[strings::function_id] =
+        static_cast<int32_t>(mobile_apis::FunctionID::OnDriverDistractionID);
     msg_params[mobile_notification::state] = driver_distraction_state();
     const auto lock_screen_dismissal =
         policy_handler_->LockScreenDismissalEnabledState();
